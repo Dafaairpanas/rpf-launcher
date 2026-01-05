@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -15,11 +16,20 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
+        // Seed roles first
+        $this->call([
+            RoleSeeder::class,
+        ]);
+
+        // Get superadmin role
+        $superAdminRole = Role::where('name', 'Super Admin')->first();
+
         User::firstOrCreate(
             ['email' => 'admin@rpf.com'],
             [
                 'name' => 'Admin RPF',
                 'password' => bcrypt('password'),
+                'role_id' => $superAdminRole?->id,
             ]
         );
 
@@ -28,3 +38,4 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 }
+

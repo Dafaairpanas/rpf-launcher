@@ -24,7 +24,7 @@ class ApplicationController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:50',
-            'description' => 'required|max:100',
+            'description' => 'nullable|max:100',
             'app_url' => 'required|url|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'theme_color' => 'required',
@@ -56,7 +56,7 @@ class ApplicationController extends Controller
     {
         $validated = $request->validate([
             'name' => 'required|max:50',
-            'description' => 'required|max:100',
+            'description' => 'nullable|max:100',
             'app_url' => 'required|url|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'theme_color' => 'required',

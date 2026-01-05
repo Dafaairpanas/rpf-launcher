@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RPF Launcher - Rajawali Perkasa Furniture</title>
     <meta name="description" content="Akses cepat ke seluruh aplikasi kerja Rajawali Perkasa Furniture">
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="dns-prefetch" href="https://cdn.tailwindcss.com">
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
@@ -81,7 +84,7 @@
 
     <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 flex-1 w-full">
         <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-10">
-            <h3 class="text-xl md:text-2xl font-semibold text-gray-800">
+            <h3 class="text-[18 px] md:text-2xl font-semibold text-gray-800">
                 Aplikasi dari Rajawali Perkasa Furniture
             </h3>
             <form action="{{ route('home') }}" method="GET" class="w-full md:w-auto">
@@ -131,7 +134,7 @@
                                     <div class="absolute -bottom-4 -left-4 w-16 h-16 bg-white/20 rounded-full blur-lg"></div>
                                 </div>
                                 @if($app->image_url)
-                                    <img src="{{ $app->image_url }}" alt="{{ $app->name }}" class="w-20 h-20 object-contain relative z-10 drop-shadow-lg">
+                                    <img src="{{ $app->image_url }}" alt="{{ $app->name }}" loading="lazy" class="w-20 h-20 object-contain relative z-10 drop-shadow-lg">
                                 @else
                                     <div class="w-20 h-20 bg-white/60 backdrop-blur rounded-2xl flex items-center justify-center relative z-10 shadow-lg">
                                         <span class="text-2xl font-bold text-gray-600">{{ substr($app->name, 0, 2) }}</span>
@@ -151,14 +154,11 @@
 
     <footer class="bg-white border-t border-gray-100 mt-aut">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-                <p class="text-gray-500 text-sm">
-                    &copy; {{ date('Y') }} Rajawali Perkasa Furniture. All rights reserved.
+            <div class="flex flex-col md:flex-row items-center justify-center gap-4">
+                <p class="text-gray-500 text-[12px]">
+                    &copy; {{ date('Y') }} Rajawali Perkasa Furniture — All Rights Reserved
                 </p>
-                <div class="flex items-center gap-2 text-gray-400">
-                    <span class="text-sm">Powered by</span>
-                    <span class="font-semibold text-gray-600">RPF Launcher</span>
-                </div>
+
             </div>
         </div>
     </footer>
