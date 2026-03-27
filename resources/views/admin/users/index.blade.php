@@ -17,7 +17,7 @@
     {{-- Mobile: Card Layout --}}
     <div class="space-y-4 md:hidden">
         @forelse($users as $user)
-            <div class="bg-white rounded-2xl border border-gray-200 p-4 relative shadow-sm">
+            <div class="bg-white rounded-2xl border border-gray-200 p-4 relative shadow-sm admin-search-item" data-search="{{ strtolower($user->name . ' ' . $user->email . ' ' . ($user->role?->name ?? '')) }}">
                 <div class="absolute -top-2 -left-2 w-7 h-7 bg-gray-800 text-white text-[11px] font-bold rounded-full flex items-center justify-center border-2 border-white shadow-sm z-10">
                     {{ $loop->iteration }}
                 </div>
@@ -93,7 +93,7 @@
             </thead>
             <tbody class="divide-y divide-gray-100">
                 @forelse($users as $user)
-                    <tr class="hover:bg-gray-50 transition-colors">
+                    <tr class="hover:bg-gray-50 transition-colors admin-search-item" data-search="{{ strtolower($user->name . ' ' . $user->email . ' ' . ($user->role?->name ?? '')) }}">
                         <td class="px-6 py-4 text-sm text-gray-500 font-medium">
                             {{ $loop->iteration }}
                         </td>

@@ -21,6 +21,57 @@ Laravel is a web application framework with expressive, elegant syntax. We belie
 
 Laravel is accessible, powerful, and provides tools required for large, robust applications.
 
+## 🚀 Cara Setup Project (Untuk Developer Baru)
+
+Jika Anda baru saja melakukan `git pull` atau `git clone`, ikuti langkah berikut untuk menjalankan project di lokal:
+
+1.  **Install Dependensi**
+    ```bash
+    composer install
+    ```
+
+2.  **Setup Environment**
+    Salin file `.env.example` menjadi `.env` dan sesuaikan konfigurasi database Anda.
+    ```bash
+    cp .env.example .env
+    ```
+
+3.  **Generate App Key**
+    ```bash
+    php artisan key:generate
+    ```
+
+4.  **Migrasi & Seeding**
+    Jalankan migrasi untuk membuat tabel dan seeder untuk mengisi data awal (Admin, Tags, & Sample Apps).
+    ```bash
+    php artisan migrate:fresh --seed
+    ```
+
+5.  **Link Storage**
+    Wajib dijalankan agar gambar aplikasi bisa tampil.
+    ```bash
+    php artisan storage:link
+    ```
+
+6.  **Jalankan Server**
+    ```bash
+    php artisan serve
+    ```
+
+**Login Admin Default:**
+- Email: `admin@rpf.com`
+- Password: `password`
+
+---
+
+## 🧪 Uji Performa (Stress Test)
+
+Jika Anda ingin mencoba performa launcher dengan **500+ aplikasi**, jalankan perintah berikut:
+```bash
+php artisan db:seed --class=PerformanceTestSeeder
+```
+Perintah ini akan membuat 500 aplikasi dummy secara otomatis.
+
 ## Learning Laravel
 
 Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.

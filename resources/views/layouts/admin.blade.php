@@ -225,18 +225,50 @@
         </div>
 
         <div id="main-content" class="flex-1 flex flex-col min-w-0 lg:ml-64 relative">
-            <header
-                class="bg-white border-b border-gray-200 px-4 lg:px-8 py-4 flex items-center justify-between sticky top-0 z-30">
-                <button onclick="toggleSidebar()"
-                    class="lg:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-lg">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-                <h2 class="text-lg font-semibold text-gray-800">@yield('header', 'Dashboard')</h2>
-                <div class="flex items-center gap-3">
-                    @yield('header-actions')
+            <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
+                <div class="px-4 lg:px-8 py-4 flex items-center justify-between gap-4">
+                    <div class="flex items-center gap-3">
+                        <button onclick="toggleSidebar()"
+                            class="lg:hidden p-2 -ml-2 text-gray-600 hover:bg-gray-100 rounded-lg">
+                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 6h16M4 12h16M4 18h16" />
+                            </svg>
+                        </button>
+                        <h2 class="text-lg font-semibold text-gray-800 truncate">@yield('header', 'Dashboard')</h2>
+                    </div>
+
+                    {{-- Desktop Search --}}
+                    <div class="flex-1 max-w-xl hidden md:block">
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                                </svg>
+                            </div>
+                            <input type="text" id="adminSearchInputDesktop" 
+                                placeholder="Cari di halaman ini... '/'" 
+                                class="admin-search-input block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-amber-500 focus:border-amber-500 sm:text-sm transition-all">
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2">
+                        @yield('header-actions')
+                    </div>
+                </div>
+
+                {{-- Mobile Search Row --}}
+                <div class="px-4 pb-4 md:hidden">
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                            </svg>
+                        </div>
+                        <input type="text" id="adminSearchInputMobile" 
+                            placeholder="Cari... '/'" 
+                            class="admin-search-input block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-amber-500 focus:border-amber-500 text-sm transition-all">
+                    </div>
                 </div>
             </header>
 
@@ -257,13 +289,53 @@
                 localStorage.setItem('sidebar-collapsed', 'false');
             }
         }
-
+        
+        // Toggle Sidebar
         function toggleSidebar() {
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebar-overlay');
             sidebar.classList.toggle('-translate-x-full');
             overlay.classList.toggle('hidden');
         }
+
+        // Global Admin Search Logic
+        document.addEventListener('DOMContentLoaded', function() {
+            const searchInputs = document.querySelectorAll('.admin-search-input');
+            
+            if (searchInputs.length > 0) {
+                // Focus with '/'
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === '/' && document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'TEXTAREA') {
+                        e.preventDefault();
+                        // Focus the visible search input
+                        const visibleInput = Array.from(searchInputs).find(i => i.offsetParent !== null);
+                        if (visibleInput) visibleInput.focus();
+                    }
+                });
+
+                // Real-time Search for items with .admin-search-item class
+                searchInputs.forEach(input => {
+                    input.addEventListener('input', function() {
+                        const query = this.value.toLowerCase().trim();
+                        
+                        // Sync other search inputs
+                        searchInputs.forEach(other => {
+                            if (other !== this) other.value = this.value;
+                        });
+
+                        const searchItems = document.querySelectorAll('.admin-search-item');
+                        searchItems.forEach(item => {
+                            const searchText = item.getAttribute('data-search') || '';
+                            if (searchText.includes(query)) {
+                                item.style.display = '';
+                            } else {
+                                item.style.display = 'none';
+                            }
+                        });
+                    });
+                });
+            }
+        });
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('/sw.js');

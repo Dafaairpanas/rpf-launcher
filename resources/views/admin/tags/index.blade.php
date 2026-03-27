@@ -26,7 +26,7 @@
             </thead>
             <tbody class="divide-y divide-gray-100">
                 @forelse($tags as $tag)
-                    <tr class="hover:bg-gray-50 transition-colors">
+                    <tr class="hover:bg-gray-50 transition-colors admin-search-item" data-search="{{ strtolower($tag->name) }}">
                         <td class="px-6 py-4 text-sm text-gray-500 font-medium">
                             {{ $loop->iteration }}
                         </td>
