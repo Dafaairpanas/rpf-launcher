@@ -140,7 +140,7 @@
 <body class="bg-gray-50 font-inter">
     <div class="flex min-h-screen">
         <aside id="sidebar"
-            class="fixed inset-y-0 left-0 z-50 w-64 bg-white border-r border-gray-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+            class="fixed inset-y-0 left-0 z-50 w-72 bg-white border-r border-gray-200 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <div class="sidebar-header flex items-center gap-3 px-6 py-5 border-b border-gray-100 h-[73px] relative group shrink-0">
                 <img src="/icons/logo.png" alt="RPF Logo" class="sidebar-logo w-10 h-10 rounded-xl object-contain">
                 <div class="sidebar-text truncate">
@@ -224,7 +224,7 @@
         <div class="fixed inset-0 bg-black/50 z-40 lg:hidden hidden transition-opacity" id="sidebar-overlay" onclick="toggleSidebar()">
         </div>
 
-        <div id="main-content" class="flex-1 flex flex-col min-w-0 lg:ml-64 relative">
+        <div id="main-content" class="flex-1 flex flex-col min-w-0 lg:ml-72 relative">
             <header class="bg-white border-b border-gray-200 sticky top-0 z-30">
                 <div class="px-4 lg:px-8 py-4 flex items-center justify-between gap-4">
                     <div class="flex items-center gap-3">
@@ -238,37 +238,37 @@
                         <h2 class="text-lg font-semibold text-gray-800 truncate">@yield('header', 'Dashboard')</h2>
                     </div>
 
-                    {{-- Desktop Search --}}
-                    <div class="flex-1 max-w-xl hidden md:block">
+                    <form action="{{ url()->current() }}" method="GET" class="flex-1 max-w-xl hidden md:block">
                         <div class="relative">
                             <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                                 <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                                 </svg>
                             </div>
-                            <input type="text" id="adminSearchInputDesktop" 
+                            <input type="text" name="search" id="adminSearchInputDesktop" 
+                                value="{{ request('search') }}"
                                 placeholder="Cari di halaman ini... '/'" 
                                 class="admin-search-input block w-full pl-10 pr-3 py-2 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-amber-500 focus:border-amber-500 sm:text-sm transition-all">
                         </div>
-                    </div>
+                    </form>
 
                     <div class="flex items-center gap-2">
                         @yield('header-actions')
                     </div>
                 </div>
 
-                {{-- Mobile Search Row --}}
                 <div class="px-4 pb-4 md:hidden">
-                    <div class="relative">
+                    <form action="{{ url()->current() }}" method="GET" class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <svg class="h-4 w-4 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                             </svg>
                         </div>
-                        <input type="text" id="adminSearchInputMobile" 
+                        <input type="text" name="search" id="adminSearchInputMobile" 
+                            value="{{ request('search') }}"
                             placeholder="Cari... '/'" 
                             class="admin-search-input block w-full pl-10 pr-3 py-2.5 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-1 focus:ring-amber-500 focus:border-amber-500 text-sm transition-all">
-                    </div>
+                    </form>
                 </div>
             </header>
 

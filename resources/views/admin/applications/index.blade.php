@@ -20,7 +20,7 @@
             <div class="bg-white rounded-2xl border border-gray-200 p-4 relative shadow-sm admin-search-item" data-search="{{ strtolower($app->name . ' ' . $app->description . ' ' . $app->app_url . ' ' . $app->tags->pluck('name')->implode(' ')) }}">
                 {{-- Numbering Badge --}}
                 <div class="absolute -top-2 -left-2 w-7 h-7 bg-gray-800 text-white text-[11px] font-bold rounded-full flex items-center justify-center border-2 border-white shadow-sm z-10">
-                    {{ $loop->iteration }}
+                    {{ $applications->firstItem() + $loop->index }}
                 </div>
                 <div class="flex items-start gap-3 mb-3">
                     <div class="w-14 h-14 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0 flex items-center justify-center"
@@ -140,7 +140,7 @@
                     <div class="flex items-center hover:bg-gray-50 transition-colors px-6 py-4 admin-search-item" data-search="{{ strtolower($app->name . ' ' . $app->description . ' ' . $app->app_url . ' ' . $app->tags->pluck('name')->implode(' ')) }}">
                         {{-- No. --}}
                         <div class="w-12 text-center text-sm font-medium text-gray-500">
-                            {{ $loop->iteration }}
+                            {{ $applications->firstItem() + $loop->index }}
                         </div>
 
                         {{-- Sort --}}
@@ -249,5 +249,10 @@
                 @endforelse
             </div>
         </div>
+    </div>
+
+    {{-- Pagination Links --}}
+    <div class="mt-6">
+        {{ $applications->links('partials.pagination') }}
     </div>
 @endsection

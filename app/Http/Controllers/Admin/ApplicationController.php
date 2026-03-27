@@ -10,10 +10,22 @@ use Illuminate\Support\Facades\Storage;
 
 class ApplicationController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $applications = Application::with('tags')->orderBy('sort_order', 'asc')->latest()->get();
-        return view('admin.applications.index', compact('applications'));
+        $search = $request->input('search');
+        
+        $applications = Application::with('tags')
+            ->when($search, function ($query, $search) {
+                return $query->where('name', 'like', '%' . $search . '%')
+                             ->orWhere('description', 'like', '%' . $search . '%');
+            })
+            ->orderBy('sort_order', 'asc')
+            ->latest()
+            ->paginate(20)
+            ->onEachSide(1)
+            ->withQueryString();
+
+        return view('admin.applications.index', compact('applications', 'search'));
     }
 
     public function create()
