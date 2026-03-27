@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Application;
+use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 
@@ -11,13 +12,14 @@ class ApplicationController extends Controller
 {
     public function index()
     {
-        $applications = Application::latest()->get();
+        $applications = Application::with('tags')->orderBy('sort_order', 'asc')->latest()->get();
         return view('admin.applications.index', compact('applications'));
     }
 
     public function create()
     {
-        return view('admin.applications.create');
+        $tags = Tag::all();
+        return view('admin.applications.create', compact('tags'));
     }
 
     public function store(Request $request)
@@ -28,6 +30,7 @@ class ApplicationController extends Controller
             'app_url' => 'required|url|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'theme_color' => 'required',
+            'sort_order' => 'nullable|integer',
         ]);
 
         $imagePath = null;
@@ -35,21 +38,26 @@ class ApplicationController extends Controller
             $imagePath = $request->file('image')->store('apps', 'public');
         }
 
-        Application::create([
+        $application = Application::create([
             'name' => $validated['name'],
             'description' => $validated['description'],
             'app_url' => $validated['app_url'],
             'image_url' => $imagePath ? Storage::url($imagePath) : null,
             'theme_color' => $validated['theme_color'],
+            'sort_order' => $validated['sort_order'] ?? 0,
         ]);
 
+        $application->tags()->sync($request->input('tags', []));
+
+        \Illuminate\Support\Facades\Cache::flush();
         return redirect()->route('admin.applications.index')
             ->with('success', 'Aplikasi berhasil ditambahkan!');
     }
 
     public function edit(Application $application)
     {
-        return view('admin.applications.edit', compact('application'));
+        $tags = Tag::all();
+        return view('admin.applications.edit', compact('application', 'tags'));
     }
 
     public function update(Request $request, Application $application)
@@ -60,6 +68,7 @@ class ApplicationController extends Controller
             'app_url' => 'required|url|max:255',
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
             'theme_color' => 'required',
+            'sort_order' => 'nullable|integer',
         ]);
 
         $imagePath = $application->image_url;
@@ -79,8 +88,12 @@ class ApplicationController extends Controller
             'app_url' => $validated['app_url'],
             'image_url' => $imagePath,
             'theme_color' => $validated['theme_color'],
+            'sort_order' => $validated['sort_order'] ?? 0,
         ]);
 
+        $application->tags()->sync($request->input('tags', []));
+
+        \Illuminate\Support\Facades\Cache::flush();
         return redirect()->route('admin.applications.index')
             ->with('success', 'Aplikasi berhasil diperbarui!');
     }
@@ -94,6 +107,7 @@ class ApplicationController extends Controller
 
         $application->delete();
 
+        \Illuminate\Support\Facades\Cache::flush();
         return redirect()->route('admin.applications.index')
             ->with('success', 'Aplikasi berhasil dihapus!');
     }

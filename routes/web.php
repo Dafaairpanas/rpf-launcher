@@ -16,6 +16,7 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', fn() => redirect()->route('admin.applications.index'));
     Route::resource('applications', AdminApplicationController::class)->except(['show']);
+    Route::resource('tags', \App\Http\Controllers\Admin\TagController::class)->except(['show']);
 
     // Hanya superadmin yang bisa akses roles dan users
     Route::middleware('superadmin')->group(function () {

@@ -12,5 +12,11 @@ class Application extends Model
         'description',
         'app_url',
         'theme_color',
+        'sort_order',
     ];
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class);
+    }
 }

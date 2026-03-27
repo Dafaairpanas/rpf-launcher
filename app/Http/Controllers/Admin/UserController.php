@@ -14,7 +14,8 @@ class UserController extends Controller
     public function index()
     {
         $users = User::with('role')->latest()->get();
-        return view('admin.users.index', compact('users'));
+        $roles = Role::all();
+        return view('admin.users.index', compact('users', 'roles'));
     }
 
     public function create()
